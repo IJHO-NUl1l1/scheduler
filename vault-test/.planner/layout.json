@@ -1,0 +1,94 @@
+{
+  "version": 3,
+  "widgets": [
+    {
+      "id": "wmwx5dnp6a",
+      "type": "heading",
+      "x": 0,
+      "y": 0,
+      "w": 12,
+      "h": 1,
+      "options": {
+        "title": "오늘"
+      }
+    },
+    {
+      "id": "wmwx5dnp6b",
+      "type": "todayList",
+      "x": 0,
+      "y": 1,
+      "w": 6,
+      "h": 7
+    },
+    {
+      "id": "wmwx5dnp6c",
+      "type": "now",
+      "x": 0,
+      "y": 8,
+      "w": 6,
+      "h": 3
+    },
+    {
+      "id": "wmwx5dnp6d",
+      "type": "timeline",
+      "x": 6,
+      "y": 1,
+      "w": 6,
+      "h": 10
+    },
+    {
+      "id": "wmwx5dnp6e",
+      "type": "heading",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 1,
+      "options": {
+        "title": "앞으로"
+      }
+    },
+    {
+      "id": "wmwx5dnp6f",
+      "type": "week",
+      "x": 0,
+      "y": 12,
+      "w": 12,
+      "h": 4
+    },
+    {
+      "id": "wmwx5dnp6g",
+      "type": "heading",
+      "x": 0,
+      "y": 16,
+      "w": 12,
+      "h": 1,
+      "options": {
+        "title": "이번 달"
+      }
+    },
+    {
+      "id": "wmwx5dnp6h",
+      "type": "month",
+      "x": 0,
+      "y": 17,
+      "w": 8,
+      "h": 10
+    },
+    {
+      "id": "wmwx5dnp6i",
+      "type": "goals",
+      "x": 8,
+      "y": 17,
+      "w": 4,
+      "h": 4
+    },
+    {
+      "id": "wmwx5dnp6j",
+      "type": "record",
+      "x": 8,
+      "y": 21,
+      "w": 4,
+      "h": 6
+    }
+  ]
+}

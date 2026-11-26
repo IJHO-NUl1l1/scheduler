@@ -1,0 +1,16 @@
+{
+  "name": "scheduler",
+  "private": true,
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @scheduler/core build && pnpm --filter @scheduler/desktop dev",
+    "start": "pnpm --filter @scheduler/core build && pnpm --filter @scheduler/desktop build && pnpm --filter @scheduler/desktop start",
+    "build": "pnpm -r build",
+    "pretest": "pnpm --filter @scheduler/core build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

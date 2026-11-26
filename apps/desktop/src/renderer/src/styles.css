@@ -1,0 +1,365 @@
+@import 'tailwindcss';
+@import '@fontsource/gowun-batang/korean-400.css';
+@import '@fontsource/gowun-batang/korean-700.css';
+@import '@fontsource/gowun-batang/latin-400.css';
+@import '@fontsource/gowun-batang/latin-700.css';
+
+/*
+ * 다크 테마. 따뜻한 무채색 바탕 + 호박색 강조 하나.
+ * 시간에 따른 변화는 색을 바꾸지 않고 사이드바의 "하루 선"으로 보여준다.
+ */
+:root {
+  --bg: #0f0f0e;
+  --surface: #1a1a18;
+  --surface-2: #222220;
+  --hover: #2a2927;
+  --ink: #ecebe6;
+  --muted: #9a9891;
+  --faint: #62615c;
+  --line: #2d2c29;
+  --accent: #e3a857;
+  --on-accent: #1a1406;
+  --now: #e5654f;
+  --warn: #e07a5f;
+  --ok: #8fb48a;
+  --event: #8fb0d6;
+  --soon: #e3a857;
+  --sun: #e8695f;
+  --sat: #7fa8dc;
+
+  --accent-soft: color-mix(in srgb, var(--accent) 13%, transparent);
+  --warn-soft: color-mix(in srgb, var(--warn) 12%, transparent);
+  --ok-soft: color-mix(in srgb, var(--ok) 13%, transparent);
+  --event-soft: color-mix(in srgb, var(--event) 12%, transparent);
+  --soon-soft: color-mix(in srgb, var(--soon) 12%, transparent);
+
+  /* 테마가 바꾸는 나머지 값 */
+  --sidebar: var(--bg);
+  --gold: var(--accent);
+  --scrim: rgb(0 0 0 / 0.58);
+  --clock-hand: #ffffff;
+  --card-border: var(--line);
+  --card-glow: none;
+  /* 기록 잔디 5단계 (GitHub 다크와 같은 초록) */
+  --heat-0: rgb(255 255 255 / 0.06);
+  --heat-1: #0e4429;
+  --heat-2: #006d32;
+  --heat-3: #26a641;
+  --heat-4: #39d353;
+  --app-font: 'Pretendard Variable', 'Pretendard', 'Malgun Gothic', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+/*
+ * 크리스마스 테마. 기본 테마의 토큰을 통째로 다시 정의한다.
+ * 짙은 초록 바탕, 강조는 빨강, 완료는 초록, 지금·곧·장식은 금색. 경고(지난 할 일)는 강조와 겹치지 않게 주황.
+ */
+:root[data-theme='christmas'] {
+  --bg: #0a1510;
+  --surface: #0f1f17;
+  --surface-2: #14291e;
+  --hover: #1b3326;
+  --ink: #f6f0e1;
+  --muted: #b2bba8;
+  --faint: #6e7c6b;
+  --line: #1f3829;
+  --accent: #d6393f;
+  --on-accent: #fff5ef;
+  --now: #e9c46a;
+  --warn: #f08c4a;
+  --ok: #43a865;
+  --event: #9fc3e8;
+  --soon: #e9c46a;
+  --sun: #ff6f6f;
+  --sat: #8fb4f0;
+  --gold: #e9c46a;
+
+  --sidebar: rgb(9 20 15 / 0.62);
+  --scrim: rgb(4 10 7 / 0.64);
+  --card-border: #22402f;
+  --card-glow: 0 0 0 1px rgb(233 196 106 / 0.04), 0 14px 34px -20px rgb(67 168 101 / 0.35);
+  /* 기록 잔디(완료율): 짙은 초록 → 초록 → 빨강, 모두 끝낸 날은 금별 (themes.tsx heatFull) */
+  --heat-0: rgb(255 255 255 / 0.05);
+  --heat-1: #1f4a33;
+  --heat-2: #2f8a52;
+  --heat-3: #b8393e;
+  --heat-4: #e9c46a;
+}
+
+/* 글꼴 (테마와 별개) */
+:root[data-font='gowun-batang'] {
+  --app-font: 'Gowun Batang', 'Pretendard Variable', serif;
+}
+:root[data-font='malgun'] {
+  --app-font: 'Malgun Gothic', system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-hover: var(--hover);
+  --color-on-accent: var(--on-accent);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-now: var(--now);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-event: var(--event);
+  --color-event-soft: var(--event-soft);
+  --color-soon: var(--soon);
+  --color-soon-soft: var(--soon-soft);
+  --color-sun: var(--sun);
+  --color-sat: var(--sat);
+  --color-scrim: var(--scrim);
+  --color-gold: var(--gold);
+  --color-sidebar: var(--sidebar);
+  --font-sans: var(--app-font);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--app-font);
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss06' 1;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hover) transparent;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+@keyframes flash {
+  0% {
+    background-color: var(--accent-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash {
+  animation: flash 6s ease-out;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 큰 숫자: 조금 좁게 */
+.display {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  font-weight: 300;
+  line-height: 0.9;
+}
+
+/* 작은 머리글: 띄어 쓴 대문자 느낌 */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+}
+
+/* 섹션 머리: 글자 + 가는 선 */
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* 팝업(확인 창·날짜 미리보기)이 나타날 때 */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop-in {
+  animation: pop-in 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 대시보드 위젯 테두리 (테마가 바꾼다) */
+@layer components {
+  .widget-frame {
+    border-color: var(--card-border);
+    box-shadow: var(--card-glow);
+  }
+}
+
+/* 테마 바꿀 때 색이 부드럽게 넘어가게 */
+:root.theme-fading * {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease !important;
+}
+
+/* 크리스마스 전구 */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.bulb {
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bulb { animation: none; }
+}
+
+/* 크리스마스 체크: 톡 튀고, 체크가 그어지고, 금빛·눈빛 조각이 퍼진다 */
+@keyframes xcheck-pop {
+  0% { transform: scale(0.55); }
+  55% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+@keyframes xcheck-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes xcheck-ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.3); opacity: 0; }
+}
+@keyframes xcheck-spark {
+  0% { transform: translate(-50%, -50%) rotate(var(--a)) translateY(0) scale(0.4); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(1); opacity: 0; }
+}
+.xcheck-pop {
+  animation: xcheck-pop 0.42s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+.xcheck-draw {
+  stroke-dasharray: 1;
+  animation: xcheck-draw 0.32s 0.12s ease-out both;
+}
+.xcheck-ring {
+  border: 1.5px solid var(--gold);
+  animation: xcheck-ring 0.6s ease-out both;
+}
+.xcheck-spark {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: xcheck-spark 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.xcheck-spark-snow {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 9999px;
+  clip-path: none;
+  background: #f4f7ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .xcheck-pop, .xcheck-draw, .xcheck-ring, .xcheck-spark { animation: none; }
+  .xcheck-ring, .xcheck-spark { display: none; }
+}
+
+/* ── 크리스마스 달력: 색은 은은하게 ── */
+.xcal-frame {
+  background:
+    repeating-linear-gradient(45deg, rgb(233 196 106 / 0.018) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, #11241b, #0d1b14);
+  border: 1px solid rgb(233 196 106 / 0.2);
+  box-shadow: inset 0 0 0 4px #0c1913, inset 0 0 0 5px rgb(233 196 106 / 0.08);
+}
+.xcal-weekhead {
+  background: linear-gradient(180deg, rgb(140 52 56 / 0.24), rgb(112 40 45 / 0.18));
+  border-bottom: 1px solid rgb(233 196 106 / 0.25) !important;
+  letter-spacing: 0.08em;
+}
+.xcal-cell {
+  background: #10211a;
+}
+.xcal-out {
+  background: #0c1914;
+}
+.xcal-eve {
+  background: radial-gradient(120% 90% at 100% 100%, rgb(233 196 106 / 0.07), transparent 70%), #10211a;
+}
+.xcal-xmas {
+  background: radial-gradient(120% 100% at 80% 90%, rgb(190 70 72 / 0.12), transparent 70%), #11231b;
+  box-shadow: inset 0 0 0 1px rgb(233 196 106 / 0.25);
+}
+.xcal-cell:hover {
+  box-shadow: inset 0 0 0 1px rgb(233 196 106 / 0.22);
+}
+
+/* 기록 잔디 칸 */
+.heat-cell {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+.heat-cell:hover {
+  outline: 1px solid var(--muted);
+  outline-offset: 1px;
+}
+.heat-today {
+  outline: 1px solid rgb(255 255 255 / 0.45);
+  outline-offset: 1px;
+}
+.heat-full:hover {
+  outline: 1px solid var(--muted);
+  outline-offset: 1px;
+  border-radius: 2.5px;
+}
+
+/* 은은한 반짝임 (늘 또렷하게 보여야 하는 것: 기록 잔디의 금별) */
+@keyframes twinkle-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+.twinkle-soft {
+  animation: twinkle-soft 2.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .twinkle-soft { animation: none; }
+}
+
+/* 테마 인트로가 화면을 덮는 동안 뒤의 반짝임을 멈춘다 */
+:root[data-intro] .bulb,
+:root[data-intro] .twinkle-soft {
+  animation-play-state: paused;
+}
