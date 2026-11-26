@@ -2,7 +2,7 @@
   "version": 3,
   "widgets": [
     {
-      "id": "wmwx5dnp6a",
+      "id": "wmwx74bz7b",
       "type": "heading",
       "x": 0,
       "y": 0,
@@ -13,7 +13,7 @@
       }
     },
     {
-      "id": "wmwx5dnp6b",
+      "id": "wmwx74bz7c",
       "type": "todayList",
       "x": 0,
       "y": 1,
@@ -21,7 +21,7 @@
       "h": 7
     },
     {
-      "id": "wmwx5dnp6c",
+      "id": "wmwx74bz7d",
       "type": "now",
       "x": 0,
       "y": 8,
@@ -29,7 +29,7 @@
       "h": 3
     },
     {
-      "id": "wmwx5dnp6d",
+      "id": "wmwx74bz7e",
       "type": "timeline",
       "x": 6,
       "y": 1,
@@ -37,7 +37,7 @@
       "h": 10
     },
     {
-      "id": "wmwx5dnp6e",
+      "id": "wmwx74bz7f",
       "type": "heading",
       "x": 0,
       "y": 11,
@@ -48,7 +48,7 @@
       }
     },
     {
-      "id": "wmwx5dnp6f",
+      "id": "wmwx74bz7g",
       "type": "week",
       "x": 0,
       "y": 12,
@@ -56,7 +56,7 @@
       "h": 4
     },
     {
-      "id": "wmwx5dnp6g",
+      "id": "wmwx74bz7h",
       "type": "heading",
       "x": 0,
       "y": 16,
@@ -67,7 +67,7 @@
       }
     },
     {
-      "id": "wmwx5dnp6h",
+      "id": "wmwx74bz7i",
       "type": "month",
       "x": 0,
       "y": 17,
@@ -75,7 +75,7 @@
       "h": 10
     },
     {
-      "id": "wmwx5dnp6i",
+      "id": "wmwx74bz7j",
       "type": "goals",
       "x": 8,
       "y": 17,
@@ -83,7 +83,7 @@
       "h": 4
     },
     {
-      "id": "wmwx5dnp6j",
+      "id": "wmwx74bz7k",
       "type": "record",
       "x": 8,
       "y": 21,
