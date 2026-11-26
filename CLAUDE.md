@@ -18,6 +18,7 @@ md 파일 기반 설치형 플래너. 계획은 [docs/PLAN.md](docs/PLAN.md), �
 - MCP 실제 실행 확인: `node packages/mcp-server/scripts/smoke.mjs <볼트 경로>`
 - 앱: 루트에서 `pnpm dev` (core 빌드 후 개발 모드) / `pnpm start` (빌드 후 실행). 개별로는 `pnpm --filter @scheduler/desktop dev`
 - 앱 화면 확인(개발용 환경 변수): `PLANNER_VAULT=<볼트>` 저장 설정 대신 이 볼트 사용, `SCHEDULER_SCREENSHOT=<png>` 캡처 후 종료, `SCHEDULER_SCREENSHOT_PRE=<js>` 로드 직후 실행, `SCHEDULER_SCREENSHOT_DELAY`, `SCHEDULER_SCREENSHOT_SCROLL`. `SCHEDULER_USER_DATA=<폴더>` 별도 데이터 폴더(실행 중인 앱과 안 겹치게). `SCHEDULER_WINDOW=1920x1080` 창 크기(자동 확대 확인). 캡처 실행은 창을 띄우지 않고 오프스크린으로 그린다. `ELECTRON_RUN_AS_NODE`는 지우고 실행
+- 앱 아이콘: `pnpm icon` (= `apps/desktop/scripts/make-icon.py`, Pillow). 그림은 이 스크립트에서만 바꾼다. 창·작업 표시줄·트레이(`resources/`)와 설치 파일 exe·바로가기·탐색기(`build/icon.ico`, desktop package.json `build` 설정)가 모두 이 결과물을 쓴다. 개발 실행(`pnpm dev`)은 node_modules의 electron.exe라 탐색기 아이콘은 설치본에서만 바뀐다
 - desktop 테스트: `pnpm --filter @scheduler/desktop test` (대시보드 격자 계산)
 - renderer는 `@scheduler/core/pure`만 import (node 모듈 없는 순수 함수)
 

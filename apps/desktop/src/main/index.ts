@@ -1,4 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, nativeImage, shell, Tray } from 'electron';
+import appIconPng from '../../resources/icon.png?asset';
+import trayPng from '../../resources/tray.png?asset';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -46,24 +48,10 @@ function showWindow(): void {
 }
 
 /** 트레이 아이콘: 16x16 원을 직접 그린다 (이미지 파일 없이) */
+/** 트레이 아이콘 (작은 크기용 단순한 모양). 그림은 scripts/make-icon.py가 만든다 */
 function trayIcon() {
-  const size = 16;
-  const buf = Buffer.alloc(size * size * 4);
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const d = Math.hypot(x - 7.5, y - 7.5);
-      const i = (y * size + x) * 4;
-      if (d <= 7) {
-        // BGRA: 남색 원 + 가운데 흰 점
-        const inner = d <= 2.5;
-        buf[i] = inner ? 255 : 0xd9;
-        buf[i + 1] = inner ? 255 : 0x6b;
-        buf[i + 2] = inner ? 255 : 0x3b;
-        buf[i + 3] = 255;
-      }
-    }
-  }
-  return nativeImage.createFromBitmap(buf, { width: size, height: size });
+  // 32px 그대로 넘기면 Windows가 화면 배율(16·24·32px)에 맞춰 줄인다
+  return nativeImage.createFromPath(trayPng);
 }
 
 function createTray(): void {
@@ -116,9 +104,9 @@ function createWindow(): void {
     minWidth: 960,
     minHeight: 640,
     show: false,
-    autoHideMenuBar: true,
     backgroundColor: NATIVE_THEMES[loadSettings().theme]?.bg ?? NATIVE_THEMES.default.bg,
     title: 'Scheduler',
+    icon: appIconPng,
     webPreferences: {
       preload: path.join(here, '../preload/index.cjs'),
       contextIsolation: true,
@@ -149,6 +137,18 @@ function createWindow(): void {
     win = null;
   });
   autoZoom(win);
+  // 메뉴줄 없음: Alt를 눌러도 파일·편집·보기 메뉴가 뜨지 않게
+  win.removeMenu();
+  if (!app.isPackaged) {
+    // 메뉴가 없으니 개발자 도구는 F12 / Ctrl+Shift+I로 직접 연다 (개발 중에만)
+    win.webContents.on('before-input-event', (e, input) => {
+      if (input.type !== 'keyDown') return;
+      if (input.key === 'F12' || (input.control && input.shift && input.key.toLowerCase() === 'i')) {
+        win?.webContents.toggleDevTools();
+        e.preventDefault();
+      }
+    });
+  }
   win.webContents.setWindowOpenHandler(({ url }) => {
     void shell.openExternal(url);
     return { action: 'deny' };
@@ -248,13 +248,31 @@ function registerIpc(): void {
   });
 }
 
-const gotLock = app.requestSingleInstanceLock();
-if (!gotLock) {
-  app.quit();
-} else {
+/**
+ * 한 번에 하나만 실행. 이미 떠 있으면 그 창을 보여 주고 끝낸다.
+ * 개발 중(electron-vite --watch)에는 코드가 바뀔 때 예전 앱을 끄고 새로 켜는데, 예전 앱이 다 꺼지기 전에
+ * 새 앱이 먼저 뜨면 잠금을 못 얻어 바로 꺼져 버린다 (그러면 예전 코드가 계속 떠 있다).
+ * 그래서 개발 중에는 잠깐(최대 3초) 기다리며 다시 시도한다.
+ */
+async function acquireSingleInstance(): Promise<boolean> {
+  if (app.requestSingleInstanceLock()) return true;
+  if (app.isPackaged) return false;
+  for (let i = 0; i < 15; i++) {
+    await new Promise((r) => setTimeout(r, 200));
+    if (app.requestSingleInstanceLock()) return true;
+  }
+  return false;
+}
+
+void acquireSingleInstance().then((gotLock) => {
+  if (!gotLock) {
+    app.quit();
+    return;
+  }
   app.on('second-instance', () => showWindow());
-  app.whenReady().then(() => {
-    app.setAppUserModelId('Scheduler');
+  void app.whenReady().then(() => {
+    // 설치 파일(electron-builder appId)과 같아야 작업 표시줄·바로가기 아이콘이 한 앱으로 묶인다
+    app.setAppUserModelId('com.scheduler.desktop');
     registerIpc();
     const s = loadSettings();
     // 개발용: PLANNER_VAULT가 있으면 저장된 설정 대신 그 볼트를 연다 (설정에는 저장하지 않음)
@@ -306,4 +324,4 @@ if (!gotLock) {
   app.on('window-all-closed', () => {
     // 트레이에 남는다
   });
-}
+});
